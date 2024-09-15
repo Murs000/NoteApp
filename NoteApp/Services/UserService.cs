@@ -21,19 +21,22 @@ public class UserService
     {
         var user = new User
         {
+            Username = model.Username,
             Email = model.Email,
             PasswordHash = HashPassword(model.Password),
             IsEmailConfirmed = false
         };
 
+        // Generate email confirmation token
+        var token = GenerateEmailConfirmationToken(user.Email);
+
+        user.EmailToken = token;
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        // Generate email confirmation token
-        var token = GenerateEmailConfirmationToken(user.Email);
         
         // Send confirmation email
-        await _emailService.SendConfirmationEmailAsync(user.Email, token);
+        await _emailService.SendConfirmationEmailAsync(user.Email,user.Username, token);
 
         return true;
     }
@@ -42,11 +45,12 @@ public class UserService
     {
         // Validate token here (e.g., match token to user)
         var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == model.Email);
+            .FirstOrDefaultAsync(u => u.Username == model.Username);
 
-        if (user == null || user.IsEmailConfirmed)
+        if (user == null || user.IsEmailConfirmed || user.EmailToken != model.Token)
             return false;
 
+        user.EmailToken = null;
         user.IsEmailConfirmed = true;
         await _context.SaveChangesAsync();
 
@@ -64,7 +68,7 @@ public class UserService
     public async Task<User?> AuthenticateUserAsync(LoginViewModel model)
     {
         var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == model.Email);
+            .FirstOrDefaultAsync(u => u.Username == model.Username);
 
         if (user == null || !VerifyPassword(model.Password, user.PasswordHash))
             return null;

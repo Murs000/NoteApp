@@ -5,6 +5,8 @@ namespace NoteApp.Models;
 public class RegisterViewModel
 {
     [Required]
+    public string Username { get; set; }
+    [Required]
     public string Email { get; set; }
     
     [Required]

@@ -11,13 +11,13 @@ public class EmailService
     private readonly string _smtpUser = "m.mastali7@gmail.com"; // SMTP username
     private readonly string _smtpPass = "odjm vapt mgod dzgu"; // SMTP password
 
-    public async Task SendConfirmationEmailAsync(string email, string token)
+    public async Task SendConfirmationEmailAsync(string email, string username, string token)
     {
         var mailMessage = new MailMessage
         {
             From = new MailAddress(_smtpUser),
             Subject = "Confirm your email",
-            Body = $"Please confirm your email by clicking <a href='http://localhost:5299/Account/ConfirmEmail?email={email}&token={token}'>here</a>.",
+            Body = $"Please confirm your email by clicking <a href='http://localhost:5299/Account/ConfirmEmail?username={username}&token={token}'>here</a>.",
             IsBodyHtml = true
         };
         mailMessage.To.Add(email);

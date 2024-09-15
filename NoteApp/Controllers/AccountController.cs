@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using NoteApp.Models;
 using NoteApp.Services;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace NoteApp.Controllers;
@@ -41,6 +42,20 @@ public class AccountController : Controller
             var user = await _userService.AuthenticateUserAsync(model);
             if (user != null)
             {
+                // Authenticate the user
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, model.Username)
+                // Add additional claims as needed
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties
+            {
+                // Optional: Add any additional properties here
+            };
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
                 // Set authentication cookies or tokens
                 return RedirectToAction("Index", "Home");
             }
@@ -50,18 +65,17 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> LogoutAsync()
+    public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Index", "Home");
     }
 
     [HttpGet]
-    public IActionResult ConfirmEmail() => View();
-
-    [HttpPost]
-    public async Task<IActionResult> ConfirmEmail(EmailConfirmationViewModel model)
+    public async Task<IActionResult> ConfirmEmailAsync(string username, string token)
     {
+        // Return a view where users can confirm their email with the provided email and token
+        var model = new EmailConfirmationViewModel { Username = username, Token = token };
         if (ModelState.IsValid)
         {
             bool isConfirmed = await _userService.ConfirmEmailAsync(model);
@@ -71,6 +85,21 @@ public class AccountController : Controller
             }
             ModelState.AddModelError("", "Invalid confirmation attempt.");
         }
-        return View(model);
+        return RedirectToAction("Register");
     }
+
+    //[HttpPost]
+    // public async Task<IActionResult> ConfirmEmail(EmailConfirmationViewModel model)
+    // {
+    //     if (ModelState.IsValid)
+    //     {
+    //         bool isConfirmed = await _userService.ConfirmEmailAsync(model);
+    //         if (isConfirmed)
+    //         {
+    //             return RedirectToAction("Login");
+    //         }
+    //         ModelState.AddModelError("", "Invalid confirmation attempt.");
+    //     }
+    //     return RedirectToAction("Login");
+    // }
 }
