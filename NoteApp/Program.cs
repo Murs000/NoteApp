@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using NoteApp.DataAccess;
 using NoteApp.Services;
@@ -12,6 +13,13 @@ builder.Services.AddTransient<UserService>();  // Add UserService to the DI cont
 
 builder.Services.AddDbContext<NoteAppDB>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+    });
 
 var app = builder.Build();
 

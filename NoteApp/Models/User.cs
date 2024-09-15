@@ -11,6 +11,7 @@ public class User
     
     [Required]
     public string PasswordHash { get; set; }
+    public string? EmailToken { get; set; }
     
     public bool IsEmailConfirmed { get; set; }
 }

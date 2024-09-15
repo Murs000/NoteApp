@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using NoteApp.Models;
 using NoteApp.Services;
@@ -48,9 +50,9 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    public IActionResult Logout()
+    public async Task<IActionResult> LogoutAsync()
     {
-        // Clear authentication cookies or tokens
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Index", "Home");
     }
 
