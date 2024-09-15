@@ -1,10 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using NoteApp.DataAccess;
+using NoteApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddTransient<EmailService>(); // Add EmailService to the DI container
+builder.Services.AddTransient<UserService>();  // Add UserService to the DI container
 
 builder.Services.AddDbContext<NoteAppDB>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -24,6 +28,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
