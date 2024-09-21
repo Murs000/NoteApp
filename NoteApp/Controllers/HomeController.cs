@@ -1,31 +1,76 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using NoteApp.Models;
+using NoteApp.Services;
+using System;
+using System.Collections.Generic;
 
 namespace NoteApp.Controllers;
 
-public class HomeController : Controller
+public class HomeController(NoteService noteService, UrlService urlService) : Controller
 {
-    private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public async Task<IActionResult> Index()
     {
-        _logger = logger;
+        return View(await noteService.GetAll());
     }
 
-    public IActionResult Index()
+    [HttpPost]
+    public async Task<IActionResult> CreateNode()
     {
-        return View();
+        var newNode = new Note
+        {
+            Content = "New Node"
+        };
+
+        await noteService.Add(newNode);
+        return RedirectToAction("Index");
     }
 
-    public IActionResult Privacy()
+    public async Task<IActionResult> SaveNode(int id, string content)
     {
-        return View();
+        var node = await noteService.Get(id);
+        if (node != null)
+        {
+            node.Content = content;
+        }
+        await noteService.Update(node);
+        return RedirectToAction("Index");
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    [HttpPost]
+    public async Task<IActionResult> DeleteNode(int id)
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        await noteService.Delete(id);
+        return RedirectToAction("Index");
+    }
+
+    // Action to create and share the shortened URL
+    public IActionResult ShareNode(int id)
+    {
+        var shortenedUrl = urlService.CreateURL(id);
+        var fullUrl = Url.Action("RedirectToOriginal", "Home", new { shortUrl = shortenedUrl }, Request.Scheme);
+
+        return Json(new { shortUri = fullUrl });
+    }
+
+    // Action to handle the redirection when a shortened URL is accessed
+    public IActionResult RedirectToOriginal(string shortUrl)
+    {
+        var nodeId = urlService.GetURL(shortUrl);
+        if (nodeId != null)
+        {
+            return RedirectToAction("NodeDetail", new { id = nodeId });
+        }
+        return NotFound();
+    }
+
+    public async Task<IActionResult> NodeDetail(int id)
+    {
+        var node = await noteService.Get(id);
+        if (node != null)
+        {
+            return View("NodeDetail", node);
+        }
+        return NotFound();
     }
 }

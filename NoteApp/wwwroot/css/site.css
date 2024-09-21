@@ -1,5 +1,7 @@
 html {
   font-size: 14px;
+  background-color: #f0f4f8;
+  color: #333;
 }
 
 @media (min-width: 768px) {
@@ -19,4 +21,124 @@ html {
 
 body {
   margin-bottom: 60px;
+  font-family: 'Arial', sans-serif;
+  background-color: #f8fafc;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #258cfb;
+}
+
+#nodesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.node {
+  width: 200px;
+  height: 230px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  display: inline-block;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.node:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.node textarea {
+  width: 100%;
+  height: 130px;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 10px;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  background-color: #f0f4f8;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.node textarea:focus {
+  background-color: white;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.node .button-container {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+}
+
+.node button {
+  width: 48%;
+  padding: 5px;
+  background-color: #258cfb;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.node button:hover {
+  background-color: #1c6fd0;
+}
+
+.node button:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+/* Style for the create node button */
+#createNode {
+  display: block;
+  margin: 0 auto 20px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#createNode:hover {
+  background-color: #218838;
+}
+
+#createNode:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #218838;
+}
+
+/* Improved responsiveness for smaller screens */
+@media (max-width: 600px) {
+  .node {
+    width: 100%;
+    height: auto;
+  }
+
+  .node .button-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .node button {
+    width: 100%;
+  }
 }

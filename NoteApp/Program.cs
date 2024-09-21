@@ -10,6 +10,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<EmailService>(); // Add EmailService to the DI container
 builder.Services.AddTransient<UserService>();  // Add UserService to the DI container
+builder.Services.AddTransient<UrlService>();
+builder.Services.AddTransient<NoteService>();
 
 builder.Services.AddDbContext<NoteAppDB>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));

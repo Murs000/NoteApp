@@ -87,19 +87,4 @@ public class AccountController : Controller
         }
         return RedirectToAction("Register");
     }
-
-    //[HttpPost]
-    // public async Task<IActionResult> ConfirmEmail(EmailConfirmationViewModel model)
-    // {
-    //     if (ModelState.IsValid)
-    //     {
-    //         bool isConfirmed = await _userService.ConfirmEmailAsync(model);
-    //         if (isConfirmed)
-    //         {
-    //             return RedirectToAction("Login");
-    //         }
-    //         ModelState.AddModelError("", "Invalid confirmation attempt.");
-    //     }
-    //     return RedirectToAction("Login");
-    // }
 }
