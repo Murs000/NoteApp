@@ -45,7 +45,7 @@
     button.addEventListener("click", function () {
         const id = button.getAttribute("data-id");
         
-        alert(`Button clicked with ID: ${id}`); // Visible alert for debugging
+        //alert(`Button clicked with ID: ${id}`); // Visible alert for debugging
         
         fetch(`/Home/ShareNote?id=${id}`)
             .then(response => {
