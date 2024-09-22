@@ -15,7 +15,7 @@ public class HomeController(NoteService noteService, UrlService urlService) : Co
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateNode()
+    public async Task<IActionResult> CreateNote()
     {
         var newNode = new Note
         {
@@ -26,7 +26,7 @@ public class HomeController(NoteService noteService, UrlService urlService) : Co
         return RedirectToAction("Index");
     }
 
-    public async Task<IActionResult> SaveNode(int id, string content)
+    public async Task<IActionResult> SaveNote(int id, string content)
     {
         var node = await noteService.Get(id);
         if (node != null)
@@ -34,37 +34,38 @@ public class HomeController(NoteService noteService, UrlService urlService) : Co
             node.Content = content;
         }
         await noteService.Update(node);
+
         return RedirectToAction("Index");
     }
 
     [HttpPost]
-    public async Task<IActionResult> DeleteNode(int id)
+    public async Task<IActionResult> DeleteNote(int id)
     {
         await noteService.Delete(id);
         return RedirectToAction("Index");
     }
 
     // Action to create and share the shortened URL
-    public IActionResult ShareNode(int id)
+    public async Task<IActionResult> ShareNote(int id)
     {
-        var shortenedUrl = urlService.CreateURL(id);
+        var shortenedUrl = await urlService.CreateURL(id);
         var fullUrl = Url.Action("RedirectToOriginal", "Home", new { shortUrl = shortenedUrl }, Request.Scheme);
 
-        return Json(new { shortUri = fullUrl });
+        return Content(fullUrl);
     }
 
     // Action to handle the redirection when a shortened URL is accessed
-    public IActionResult RedirectToOriginal(string shortUrl)
+    public async Task<IActionResult> RedirectToOriginal(string shortUrl)
     {
-        var nodeId = urlService.GetURL(shortUrl);
+        var nodeId = await urlService.GetURL(shortUrl);
         if (nodeId != null)
         {
-            return RedirectToAction("NodeDetail", new { id = nodeId });
+            return RedirectToAction("NoteDetail", new { id = nodeId });
         }
         return NotFound();
     }
 
-    public async Task<IActionResult> NodeDetail(int id)
+    public async Task<IActionResult> NoteDetail(int id)
     {
         var node = await noteService.Get(id);
         if (node != null)

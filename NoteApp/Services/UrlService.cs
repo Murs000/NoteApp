@@ -19,6 +19,13 @@ public class UrlService
     {
         var shortUrl = GenerateShortUrl();
 
+        if(_context.URLs.Select(u=>u.NoteId).Contains(noteId))
+        {
+            var returnUrl =  await _context.URLs.FirstAsync(u => u.NoteId == noteId);
+
+            return returnUrl.Short;
+        }
+
         var uRL = new URL
         {
             NoteId = noteId,
@@ -26,6 +33,7 @@ public class UrlService
         };
 
         await _context.AddAsync(uRL);
+        await _context.SaveChangesAsync();
 
         return shortUrl;
     }
