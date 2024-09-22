@@ -1,7 +1,26 @@
 @model NoteApp.Models.Note
 
-<h2>Note Detail</h2>
+<div class="noteDetail-container">
+    <header class="header-banner">
+        <h2>Note Detail</h2>
+    </header>
 
-<div class="noteDetail">
-    <textarea>@Model.Content</textarea>
+    <div class="noteDetail">
+        <textarea id="content-@Model.Id">@Model.Content</textarea>
+        <div class="button-container">
+            <button class="saveNote" data-id="@Model.Id">Save</button>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Event listener for saving note content
+        document.querySelector(".saveNote").addEventListener("click", function () {
+            const id = this.getAttribute("data-id");
+            const content = document.getElementById(`content-${id}`).value; // Fetch content
+            fetch(`@Url.Action("SaveNote")?id=${id}&content=${encodeURIComponent(content)}`, { method: 'POST' })
+                .then(() => location.reload());
+        });
+    </script>
+}

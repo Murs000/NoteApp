@@ -3,7 +3,7 @@
 <h2>Note Dashboard</h2>
 
 <div>
-    <button id="createNote">Create Node</button>
+    <button id="createNote">Create Note</button>
 </div>
 
 <div id="notesContainer">
@@ -11,25 +11,24 @@
     {
         <div class="note">
             <textarea id="content-@note.Id">@note.Content</textarea>
-            <!-- The Save button should be rendered here -->
-            <button class="saveNote" data-id="@note.Id">Save</button>
-            <!-- The Share button -->
-            <button class="shareNote" data-id="@note.Id">Share</button>
-            <!-- The Delete button -->
-            <button class="deleteNote" data-id="@note.Id">Delete</button>
+            <div class="button-container">
+                <button class="saveNote" data-id="@note.Id">Save</button>
+                <button class="shareNote" data-id="@note.Id">Share</button>
+                <button class="deleteNote" data-id="@note.Id">Delete</button>
+            </div>
         </div>
     }
 </div>
 
 @section Scripts {
     <script>
-        // Event listener for creating new nodes
+        // Event listener for creating new notes
         document.getElementById("createNote").addEventListener("click", function () {
             fetch('@Url.Action("CreateNote")', { method: 'POST' })
                 .then(() => location.reload());
         });
 
-        // Event listener for saving node content
+        // Event listener for saving note content
         document.querySelectorAll(".saveNote").forEach(button => {
             button.addEventListener("click", function () {
                 const id = button.getAttribute("data-id");
@@ -39,43 +38,40 @@
             });
         });
 
-
-        //Event listener for sharing nodes
+        // Event listener for sharing notes
         document.querySelectorAll(".shareNote").forEach(button => {
-    button.addEventListener("click", function () {
-        const id = button.getAttribute("data-id");
-        
-        //alert(`Button clicked with ID: ${id}`); // Visible alert for debugging
-        
-        fetch(`/Home/ShareNote?id=${id}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.text();
-            })
-            .then(shortUrl => {
-                alert(`Shortened URL: ${shortUrl}`); // Debugging: Show the URL in an alert
+            button.addEventListener("click", function () {
+                const id = button.getAttribute("data-id");
 
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(shortUrl)
-                        .then(() => {
-                            alert("Link copied to clipboard!");
-                        })
-                        .catch(err => {
-                            alert("Error copying to clipboard: " + err);
-                        });
-                } else {
-                    alert("Clipboard API not supported. Use Ctrl+C to copy manually.");
-                }
-            })
-            .catch(err => {
-                alert("Error: " + err);
+                fetch(`/Home/ShareNote?id=${id}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(shortUrl => {
+                        alert(`Shortened URL: ${shortUrl}`); // Debugging: Show the URL in an alert
+
+                        if (navigator.clipboard) {
+                            navigator.clipboard.writeText(shortUrl)
+                                .then(() => {
+                                    alert("Link copied to clipboard!");
+                                })
+                                .catch(err => {
+                                    alert("Error copying to clipboard: " + err);
+                                });
+                        } else {
+                            alert("Clipboard API not supported. Use Ctrl+C to copy manually.");
+                        }
+                    })
+                    .catch(err => {
+                        alert("Error: " + err);
+                    });
             });
-    });
-});
+        });
 
-        // Event listener for deleting a node
+        // Event listener for deleting a note
         document.querySelectorAll(".deleteNote").forEach(button => {
             button.addEventListener("click", function () {
                 const id = button.getAttribute("data-id");
@@ -83,7 +79,7 @@
                 // Send a delete request to the server
                 fetch(`@Url.Action("DeleteNote")?id=${id}`, { method: 'POST' })
                     .then(() => location.reload())
-                    .catch(err => console.error("Could not delete node: ", err));
+                    .catch(err => console.error("Could not delete note: ", err));
             });
         });
     </script>
