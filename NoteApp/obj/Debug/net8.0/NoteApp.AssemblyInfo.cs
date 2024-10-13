@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NoteApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d3d3de690777ce7739ada35a55d28b6cee7c5d2f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cf0a753a8acb2fcc4dbc2b0df6c6293a53b07e8f")]
 [assembly: System.Reflection.AssemblyProductAttribute("NoteApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NoteApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

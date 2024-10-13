@@ -1,6 +1,8 @@
 # Ignore build outputs
 /bin/
+NoteApp/bin
 /obj/
+NoteApp/obj
 /out/
 
 # Ignore user-specific files
