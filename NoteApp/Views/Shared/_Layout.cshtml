@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/NoteApp.styles.css" asp-append-version="true" />
     <style>
-        /* Add some custom styles for the notification and profile dropdown */
         .notification-icon {
             position: relative;
             margin-right: 15px;
@@ -53,31 +52,34 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Help" asp-action="Index">Help</a>
                         </li>
                     </ul>
-                    
-                    <!-- Search Bar -->
-                    <form class="d-flex me-3" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search Notes" aria-label="Search">
-                        <button class="btn btn-outline-secondary" type="submit">Search</button>
-                    </form>
 
-                    <!-- Notification Bell -->
-                    <div class="notification-icon">
-                        <button class="btn btn-light" type="button">
-                            <i class="bi bi-bell"></i> <!-- Add Bootstrap Icons for Notification -->
-                            <span class="notification-badge">3</span> <!-- Example badge for notifications -->
-                        </button>
-                    </div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <!-- Search Bar -->
+                        <form class="d-flex me-3" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Search Notes" aria-label="Search">
+                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                        </form>
 
-                    <!-- User Profile Dropdown -->
-                    <div class="dropdown me-3">
-                        <button class="btn btn-light dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="~/images/user-avatar.png" alt="User Avatar" class="user-avatar"> <!-- Placeholder for User Avatar -->
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile Settings</a></li>
-                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Details">Account Details</a></li>
-                        </ul>
-                    </div>
+                        <!-- Notification Bell -->
+                        <div class="notification-icon">
+                            <button class="btn btn-light" type="button">
+                                <i class="bi bi-bell"></i>
+                                <span class="notification-badge">3</span>
+                            </button>
+                        </div>
+
+                        <!-- User Profile Dropdown -->
+                        <div class="dropdown me-3">
+                            <button class="btn btn-light dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="~/images/user-avatar.png" alt="User Avatar" class="user-avatar">
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile Settings</a></li>
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Details">Account Details</a></li>
+                            </ul>
+                        </div>
+                    }
 
                     <ul class="navbar-nav">
                         @if (User.Identity.IsAuthenticated)
@@ -100,7 +102,9 @@
                     </ul>
 
                     <!-- Dark/Light Mode Toggle -->
-                    <button class="btn btn-light ms-2" id="themeToggle">🌙</button> <!-- Icon for dark/light mode -->
+                    <button class="btn btn-light ms-2" id="themeToggle">
+                        <span id="themeIcon">🌙</span>
+                    </button>
                 </div>
             </div>
         </nav>
@@ -119,16 +123,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/Scripts/themeToggle.js" asp-append-version="true"></script> <!-- Reference to the new script -->
     @await RenderSectionAsync("Scripts", required: false)
-
-    <script>
-        // Dark/Light Mode Toggle Script
-        document.getElementById('themeToggle').addEventListener('click', function() {
-            document.body.classList.toggle('bg-dark');
-            document.body.classList.toggle('text-white');
-            document.querySelector('.navbar').classList.toggle('bg-dark');
-            document.querySelector('.navbar').classList.toggle('bg-white');
-        });
-    </script>
 </body>
 </html>

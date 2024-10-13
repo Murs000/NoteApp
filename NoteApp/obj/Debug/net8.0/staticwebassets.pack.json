@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets/js/site.js"
     },
     {
+      "Id": "/Users/mursal/Projects/NoteApp/NoteApp/wwwroot/js/themeToggle.js",
+      "PackagePath": "staticwebassets/js/themeToggle.js"
+    },
+    {
       "Id": "/Users/mursal/Projects/NoteApp/NoteApp/wwwroot/lib/bootstrap/LICENSE",
       "PackagePath": "staticwebassets/lib/bootstrap"
     },
