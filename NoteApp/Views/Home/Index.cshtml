@@ -1,86 +1,79 @@
 ﻿@model List<NoteApp.Models.Note>
 
-<h2>Note Dashboard</h2>
+@if (User.Identity.IsAuthenticated)
+{
+    <h2 class="mt-4">Note Dashboard</h2>
 
-<div>
-    <button id="createNote">Create Note</button>
-</div>
+    <div class="mb-3">
+        <button id="createNote" class="btn btn-success">Create Note</button>
+    </div>
 
-<div id="notesContainer">
-    @foreach (var note in Model)
-    {
-        <div class="note">
-            <textarea id="content-@note.Id">@note.Content</textarea>
-            <div class="button-container">
-                <button class="saveNote" data-id="@note.Id">Save</button>
-                <button class="shareNote" data-id="@note.Id">Share</button>
-                <button class="deleteNote" data-id="@note.Id">Delete</button>
+    <div id="notesContainer" class="mb-4">
+        @foreach (var note in Model)
+        {
+            <div class="note mb-3 p-3 border rounded">
+                <textarea id="content-@note.Id" class="form-control mb-2">@note.Content</textarea>
+                <div class="button-container">
+                    <button class="saveNote btn btn-primary" data-id="@note.Id">Save</button>
+                    <button class="shareNote btn btn-primary" data-id="@note.Id">Share</button>
+                    <button class="deleteNote btn btn-danger" data-id="@note.Id">Delete</button>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="features-section">
+        <h1>Welcome to <span class="app-name">NoteApp</span></h1>
+        <p class="tagline">The ultimate note-taking tool for all your ideas and collaboration needs.</p>
+
+        <div class="features-grid mb-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Organize Your Notes</h5>
+                    <p class="card-text">Categorize your notes into different sections.</p>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Tag Your Notes</h5>
+                    <p class="card-text">Use tags to easily find and organize your notes.</p>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Search Functionality</h5>
+                    <p class="card-text">Quickly search for notes by title or content.</p>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Reminders</h5>
+                    <p class="card-text">Set reminders for important notes.</p>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Collaborate with Others</h5>
+                    <p class="card-text">Share notes with friends or colleagues.</p>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Export and Import</h5>
+                    <p class="card-text">Easily import and export your notes in various formats.</p>
+                </div>
             </div>
         </div>
-    }
-</div>
+
+        <div class="cta-buttons">
+            <a href="@Url.Action("Register", "Account")" class="btn btn-success">Sign Up</a>
+            <a href="@Url.Action("Login", "Account")" class="btn btn-outline-primary">Login</a>
+        </div>
+    </div>
+}
 
 @section Scripts {
-    <script>
-        // Event listener for creating new notes
-        document.getElementById("createNote").addEventListener("click", function () {
-            fetch('@Url.Action("CreateNote")', { method: 'POST' })
-                .then(() => location.reload());
-        });
-
-        // Event listener for saving note content
-        document.querySelectorAll(".saveNote").forEach(button => {
-            button.addEventListener("click", function () {
-                const id = button.getAttribute("data-id");
-                const content = document.getElementById(`content-${id}`).value; // Fetch content
-                fetch(`@Url.Action("SaveNote")?id=${id}&content=${encodeURIComponent(content)}`, { method: 'POST' })
-                    .then(() => location.reload());
-            });
-        });
-
-        // Event listener for sharing notes
-        document.querySelectorAll(".shareNote").forEach(button => {
-            button.addEventListener("click", function () {
-                const id = button.getAttribute("data-id");
-
-                fetch(`/Home/ShareNote?id=${id}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        return response.text();
-                    })
-                    .then(shortUrl => {
-                        alert(`Shortened URL: ${shortUrl}`); // Debugging: Show the URL in an alert
-
-                        if (navigator.clipboard) {
-                            navigator.clipboard.writeText(shortUrl)
-                                .then(() => {
-                                    alert("Link copied to clipboard!");
-                                })
-                                .catch(err => {
-                                    alert("Error copying to clipboard: " + err);
-                                });
-                        } else {
-                            alert("Clipboard API not supported. Use Ctrl+C to copy manually.");
-                        }
-                    })
-                    .catch(err => {
-                        alert("Error: " + err);
-                    });
-            });
-        });
-
-        // Event listener for deleting a note
-        document.querySelectorAll(".deleteNote").forEach(button => {
-            button.addEventListener("click", function () {
-                const id = button.getAttribute("data-id");
-
-                // Send a delete request to the server
-                fetch(`@Url.Action("DeleteNote")?id=${id}`, { method: 'POST' })
-                    .then(() => location.reload())
-                    .catch(err => console.error("Could not delete note: ", err));
-            });
-        });
-    </script>
+    <script src="~/js/notes.js"></script>
 }

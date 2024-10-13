@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "eBtDVJgyIth2z2lVttm/H16cIU65tzcObgQTlVZaKRA=",
+  "Hash": "UE1VzXc9tVlmuLguaaIBGk9+WyeuEXNIw2h5WXrZHQ0=",
   "Source": "NoteApp",
   "BasePath": "_content/NoteApp",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/favicon.ico"
+    },
+    {
+      "Identity": "/Users/mursal/Projects/NoteApp/NoteApp/wwwroot/js/notes.js",
+      "SourceId": "NoteApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/mursal/Projects/NoteApp/NoteApp/wwwroot/",
+      "BasePath": "_content/NoteApp",
+      "RelativePath": "js/notes.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/notes.js"
     },
     {
       "Identity": "/Users/mursal/Projects/NoteApp/NoteApp/wwwroot/js/site.js",

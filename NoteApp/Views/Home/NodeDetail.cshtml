@@ -14,13 +14,5 @@
 </div>
 
 @section Scripts {
-    <script>
-        // Event listener for saving note content
-        document.querySelector(".saveNote").addEventListener("click", function () {
-            const id = this.getAttribute("data-id");
-            const content = document.getElementById(`content-${id}`).value; // Fetch content
-            fetch(`@Url.Action("SaveNote")?id=${id}&content=${encodeURIComponent(content)}`, { method: 'POST' })
-                .then(() => location.reload());
-        });
-    </script>
+    <script src="~/js/notes.js"></script>
 }

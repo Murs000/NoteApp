@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
+      "Id": "/Users/mursal/Projects/NoteApp/NoteApp/wwwroot/js/notes.js",
+      "PackagePath": "staticwebassets/js/notes.js"
+    },
+    {
       "Id": "/Users/mursal/Projects/NoteApp/NoteApp/wwwroot/js/site.js",
       "PackagePath": "staticwebassets/js/site.js"
     },

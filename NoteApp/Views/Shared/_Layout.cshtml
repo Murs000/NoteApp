@@ -7,25 +7,78 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/NoteApp.styles.css" asp-append-version="true" />
+    <style>
+        /* Add some custom styles for the notification and profile dropdown */
+        .notification-icon {
+            position: relative;
+            margin-right: 15px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 5px;
+            font-size: 12px;
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NoteApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Help" asp-action="Index">Help</a>
+                        </li>
                     </ul>
+                    
+                    <!-- Search Bar -->
+                    <form class="d-flex me-3" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search Notes" aria-label="Search">
+                        <button class="btn btn-outline-secondary" type="submit">Search</button>
+                    </form>
+
+                    <!-- Notification Bell -->
+                    <div class="notification-icon">
+                        <button class="btn btn-light" type="button">
+                            <i class="bi bi-bell"></i> <!-- Add Bootstrap Icons for Notification -->
+                            <span class="notification-badge">3</span> <!-- Example badge for notifications -->
+                        </button>
+                    </div>
+
+                    <!-- User Profile Dropdown -->
+                    <div class="dropdown me-3">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="~/images/user-avatar.png" alt="User Avatar" class="user-avatar"> <!-- Placeholder for User Avatar -->
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile Settings</a></li>
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Details">Account Details</a></li>
+                        </ul>
+                    </div>
+
                     <ul class="navbar-nav">
                         @if (User.Identity.IsAuthenticated)
                         {
@@ -41,10 +94,13 @@
                                 <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link btn btn-primary text-white" asp-controller="Account" asp-action="Register">Register</a>
+                                <a class="nav-link btn btn-outline-primary" asp-controller="Account" asp-action="Register">Sign Up</a>
                             </li>
                         }
                     </ul>
+
+                    <!-- Dark/Light Mode Toggle -->
+                    <button class="btn btn-light ms-2" id="themeToggle">🌙</button> <!-- Icon for dark/light mode -->
                 </div>
             </div>
         </nav>
@@ -64,5 +120,15 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        // Dark/Light Mode Toggle Script
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            document.body.classList.toggle('bg-dark');
+            document.body.classList.toggle('text-white');
+            document.querySelector('.navbar').classList.toggle('bg-dark');
+            document.querySelector('.navbar').classList.toggle('bg-white');
+        });
+    </script>
 </body>
 </html>
